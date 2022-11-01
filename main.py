@@ -2,8 +2,6 @@ from tkinter import Y
 from webbrowser import get
 import discord
 from discord.ext import commands
-import os
-import environ
 import asyncio
 import json
 import requests
@@ -18,11 +16,14 @@ from urllib.parse import unquote, quote_plus, urlencode
 from lxml import html
 from xml.etree import ElementTree as ET
 from bs4 import BeautifulSoup
+from system import TOKEN
 
 intents = discord.Intents.all()
 bot=commands.Bot(command_prefix='/',help_command=None,intents=intents)
 playlist = []
-loop = False    
+loop = False
+
+NMJ = False
 
 @bot.event # 시작
 async def on_ready():
@@ -39,6 +40,7 @@ async def 도움말(ctx):
     embed.add_field(name="기본", value="`도움말`, `시간`, `따라하기`, `주사위`", inline=False)
     embed.add_field(name="음악", value="`재생`, `일시정지`, `반복`, `플레이리스트`, `삭제`, `넘기기`, `종료`", inline=False)
     embed.add_field(name="학교", value="`급식`, `시간표`, `학사일정`", inline=False)
+    embed.add_field(name="특수", value="`이벤트`, `내맘점(내 맘대로 점심)`", inline=False)
     embed.add_field(name="시스템", value="`정보`", inline=False)
     await ctx.send(embed=embed)
 
@@ -58,6 +60,25 @@ async def 안녕(ctx):
 @bot.command()
 async def 따라하기(ctx,*,text):
     await ctx.send(text)
+
+# 이벤트
+@bot.command()
+async def 이벤트(ctx,*,text):
+    await ctx.send("현재 진행중인 이벤트가 없습니다.")
+
+# 특수 中 내맘점 (내 맘대로 점심)
+@bot.command(aliases=['내맘대로점심','ㄴㅁㅈ'])
+async def 내맘점(ctx):
+    if NMJ == True:
+        alltime = time.strftime('%Y-%m-%d-%p-%I-%M-%S', time.localtime(time.time()))
+        await ctx.send(f"현재 {alltime[5:7]}월 강원사대부고 내 마음대로 점심이 운영중이에요.")
+        await ctx.send("n월n일까지 신청할 수 있습니다.")
+        embed = discord.Embed(title="내맘점 신청",description='[링크](https://m.site.naver.com/qrcode/view.naver?v=12pq8) 에서 신청할 수 있습니다.', color=0x62c1cc)
+        embed.set_image(url="https://media.discordapp.net/attachments/1034286732713132032/1036859140556988456/IMG_6958.jpg?width=473&height=631")
+        await ctx.send(embed=embed)
+    else:
+        await ctx.send("현재 강원사대부고 내 맘대로 점심을 운영하고 있지 않아요. 다음에 다시 신청해주세요 :)")
+
 
 Diceimage = ["0",
 "https://media.discordapp.net/attachments/898797966666637354/998218730452549692/Dice_1.jpg",
@@ -284,6 +305,7 @@ def meal_monthdata(Dstart,Dend):
     question = xmlUrl + information
     raw = requests.get(question).text
     return raw
+
 def Mdate_calculate(month,date):
     if month <= 7 and month%2 == 1:
         if date + 6 > 31:
@@ -482,5 +504,4 @@ async def 학사일정(ctx):
 async def 정보(ctx):
     await ctx.send('봇 정보 : 구동 체제 - VScode (Python) 버전 : 3.10.8 *기반 : project POPPY (discord.py : 2.0.1')
 
-TOKEN = os.environ.get('BOT_TOKEN')
 bot.run(TOKEN)
