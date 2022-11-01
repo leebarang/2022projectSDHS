@@ -481,4 +481,4 @@ async def 학사일정(ctx):
 async def 정보(ctx):
     await ctx.send('봇 정보 : 구동 체제 - VScode (Python) 버전 : 3.10.8 *기반 : project POPPY (discord.py : 2.0.1')
 
-bot.run("MTAzNDI2NjM4NDMzNjY4NzEyNA.Gupl_H.VLq4cCekTMx33AsKAAZ2L94VVwdjFxR7NcbIpY")
+bot.run(TOKEN)
