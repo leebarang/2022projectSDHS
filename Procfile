@@ -1,1 +1,1 @@
-worker: python sdhsbot.py
+worker: python main.py
