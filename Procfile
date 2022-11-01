@@ -1,1 +1,1 @@
-worker: python SDHS.py
+worker: python main.py
