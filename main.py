@@ -1,4 +1,3 @@
-from tkinter import Y
 from webbrowser import get
 import discord
 from discord.ext import commands
