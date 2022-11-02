@@ -5,6 +5,8 @@ from discord.ext import commands
 import asyncio
 import json
 import os
+import dotenv
+from dotenv import load_dotenv
 import requests
 import time
 import datetime
@@ -505,6 +507,6 @@ async def 학사일정(ctx):
 async def 정보(ctx):
     await ctx.send('봇 정보 : 구동 체제 - VScode (Python) 버전 : 3.10.8 *기반 : project POPPY (discord.py : 2.0.1')
 
-TOKEN = str(os.environ["TOKEN"])
+TOKEN = os.getenv("BOT_TOKEN")
 
 bot.run(TOKEN)
