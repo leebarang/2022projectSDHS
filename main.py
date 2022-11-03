@@ -4,7 +4,6 @@ from discord.ext import commands
 import asyncio
 import json
 import os
-import dotenv
 from dotenv import load_dotenv
 import requests
 import time
@@ -16,8 +15,7 @@ import ffmpeg
 from youtube_search import YoutubeSearch
 from youtubesearchpython import *
 from urllib.parse import unquote, quote_plus, urlencode
-from lxml import html
-from xml.etree import ElementTree as ET
+import lxml
 from bs4 import BeautifulSoup
 #from system import TOKEN
 
