@@ -46,11 +46,11 @@ async def 도움말(ctx):
     await ctx.send(embed=embed)
 
 # 시간
+KRtime = datetime.datetime.now(pytz.timezone('Asia/Seoul')).strftime('%Y-%m-%d-%p-%I-%M-%S') #UTC+9
 @bot.command() 
 async def 시간(ctx,*,text = None): 
   if(text == None):
-    alltime = time.strftime('%Y-%m-%d-%p-%I-%M-%S', time.localtime(time.time()))
-    await ctx.send(f"현재 시간은 [{alltime[:4]}-{alltime[5:7]}-{alltime[8:10]}] {alltime[11:13]} {alltime[14:16]}시 {alltime[17:19]}분 {alltime[20:22]}초 입니다.")
+    await ctx.send(f"현재 시간은 [{KRtime[:4]}-{KRtime[5:7]}-{KRtime[8:10]}] {KRtime[11:13]} {KRtime[14:16]}시 {KRtime[17:19]}분 {KRtime[20:22]}초 입니다.")
 
 # 인사
 @bot.command() 
@@ -71,8 +71,7 @@ async def 이벤트(ctx,*,text):
 @bot.command(aliases=['내맘대로점심','ㄴㅁㅈ'])
 async def 내맘점(ctx):
     if NMJ == True:
-        alltime = time.strftime('%Y-%m-%d-%p-%I-%M-%S', time.localtime(time.time()))
-        await ctx.send(f"현재 {alltime[5:7]}월 강원사대부고 내 마음대로 점심이 운영중이에요.")
+        await ctx.send(f"현재 {KRtime[5:7]}월 강원사대부고 내 마음대로 점심이 운영중이에요.")
         await ctx.send("n월n일까지 신청할 수 있습니다.")
         embed = discord.Embed(title="내맘점 신청",description='[링크](https://m.site.naver.com/qrcode/view.naver?v=12pq8) 에서 신청할 수 있습니다.', color=0x62c1cc)
         embed.set_image(url="https://media.discordapp.net/attachments/1034286732713132032/1036859140556988456/IMG_6958.jpg?width=473&height=631")
@@ -298,11 +297,10 @@ async def 급식(ctx,*,date=None):
     if date == None:
         await ctx.send("급식 정보를 알고싶으시다면 → \"/급식 어제\",\"/급식 오늘\",\"/급식 내일\" 또는 \"/급식 <날짜>\"로 검색해주세요.\n`날짜로 검색 예시 : /급식 20220131`")
         return
-    alltime = time.strftime('%Y-%m-%d-%p-%I-%M-%S', time.localtime(time.time()))
     if date == "오늘":
-        today = get_day(int(alltime[:4]),int(alltime[5:7]),int(alltime[8:10]))
-        embed = discord.Embed(title=f"SDHS 급식 ({alltime[5:7]}월 {alltime[8:10]}일 {today}요일)", color=0x62c1cc) # Embed의 기본 틀(색상, 메인 제목, 설명)을 잡아줍니다
-        MealDay = f"{alltime[:4]}{alltime[5:7]}{alltime[8:10]}"
+        today = get_day(int(KRtime[:4]),int(KRtime[5:7]),int(KRtime[8:10]))
+        embed = discord.Embed(title=f"SDHS 급식 ({KRtime[5:7]}월 {KRtime[8:10]}일 {today}요일)", color=0x62c1cc) # Embed의 기본 틀(색상, 메인 제목, 설명)을 잡아줍니다
+        MealDay = f"{KRtime[:4]}{KRtime[5:7]}{KRtime[8:10]}"
         MealInfo = json.loads(meal_daydata(MealDay)) # 집합
         if list(MealInfo.keys())[0] == 'RESULT':
             embed.add_field(name="정보", value="당일 급식 메뉴가 존재하지 않거나, 아직 공개되지 않았습니다.", inline=False)
@@ -317,27 +315,27 @@ async def 급식(ctx,*,date=None):
         embed.add_field(name="알레르기", value=f"`{Allergy}`", inline=False)
         await ctx.send(embed=embed)
     elif date == "어제":
-        if int(alltime[8:10]) == 1:
-            if (int(alltime[5:7])-1) == 0:
-                today = get_day(int(alltime[:4]-1),12,31)
+        if int(KRtime[8:10]) == 1:
+            if (int(KRtime[5:7])-1) == 0:
+                today = get_day(int(KRtime[:4]-1),12,31)
                 embed = discord.Embed(title=f"SDHS 급식 (12월 31일 {today}요일)", color=0x62c1cc) # Embed의 기본 틀(색상, 메인 제목, 설명)을 잡아줍니다
-                MealDay = f"{int(alltime[:4])-1:04d}1231"
-            elif (int(alltime[5:7])-1) == 2 and int(alltime[:4])%4 == 0:
-                today = get_day(int(alltime[:4]),2,29)
+                MealDay = f"{int(KRtime[:4])-1:04d}1231"
+            elif (int(KRtime[5:7])-1) == 2 and int(KRtime[:4])%4 == 0:
+                today = get_day(int(KRtime[:4]),2,29)
                 embed = discord.Embed(title=f"SDHS 급식 (02월 29일 {today}요일)", color=0x62c1cc) # Embed의 기본 틀(색상, 메인 제목, 설명)을 잡아줍니다
-                MealDay = f"{alltime[:4]}0229"
-            elif (int(alltime[5:7])-1) == 2 and int(alltime[:4])%4 != 0:
-                today = get_day(int(alltime[:4]),2,28)
+                MealDay = f"{KRtime[:4]}0229"
+            elif (int(KRtime[5:7])-1) == 2 and int(KRtime[:4])%4 != 0:
+                today = get_day(int(KRtime[:4]),2,28)
                 embed = discord.Embed(title=f"SDHS 급식 (02월 28일 {today}요일)", color=0x62c1cc) # Embed의 기본 틀(색상, 메인 제목, 설명)을 잡아줍니다
-                MealDay = f"{alltime[:4]}0228"
-            elif (int(alltime[5:7])-1) in [1,3,5,7,8,10]:
-                today = get_day(int(alltime[:4]),int(alltime[5:7])-1,31)
-                embed = discord.Embed(title=f"SDHS 급식 ({int(alltime[5:7])-1:02d}월 31일 {today}요일)", color=0x62c1cc) # Embed의 기본 틀(색상, 메인 제목, 설명)을 잡아줍니다
-                MealDay = f"{alltime[:4]}{int(alltime[5:7])-1:02d}31"
-            elif (int(alltime[5:7])-1) in [4,6,9,11]:
-                today = get_day(int(alltime[:4]),int(alltime[5:7])-1,30)
-                embed = discord.Embed(title=f"SDHS 급식 ({int(alltime[5:7])-1:02d}월 30일 {today}요일)", color=0x62c1cc) # Embed의 기본 틀(색상, 메인 제목, 설명)을 잡아줍니다
-                MealDay = f"{alltime[:4]}{int(alltime[5:7])-1:02d}30"
+                MealDay = f"{KRtime[:4]}0228"
+            elif (int(KRtime[5:7])-1) in [1,3,5,7,8,10]:
+                today = get_day(int(KRtime[:4]),int(KRtime[5:7])-1,31)
+                embed = discord.Embed(title=f"SDHS 급식 ({int(KRtime[5:7])-1:02d}월 31일 {today}요일)", color=0x62c1cc) # Embed의 기본 틀(색상, 메인 제목, 설명)을 잡아줍니다
+                MealDay = f"{KRtime[:4]}{int(KRtime[5:7])-1:02d}31"
+            elif (int(KRtime[5:7])-1) in [4,6,9,11]:
+                today = get_day(int(KRtime[:4]),int(KRtime[5:7])-1,30)
+                embed = discord.Embed(title=f"SDHS 급식 ({int(KRtime[5:7])-1:02d}월 30일 {today}요일)", color=0x62c1cc) # Embed의 기본 틀(색상, 메인 제목, 설명)을 잡아줍니다
+                MealDay = f"{KRtime[:4]}{int(KRtime[5:7])-1:02d}30"
             MealInfo = json.loads(meal_daydata(MealDay)) # 집합
             if list(MealInfo.keys())[0] == 'RESULT':
                 embed.add_field(name="정보", value="당일 급식 메뉴가 존재하지 않거나, 아직 공개되지 않았습니다.", inline=False)
@@ -352,9 +350,9 @@ async def 급식(ctx,*,date=None):
             embed.add_field(name="알레르기", value=f"`{Allergy}`", inline=False)
             await ctx.send(embed=embed)
         else:
-            today = get_day(int(alltime[:4]),int(alltime[5:7]),(int(alltime[8:10])-1))
-            embed = discord.Embed(title=f"SDHS 급식 ({alltime[5:7]}월 {int(alltime[8:10])-1:02d}일 {today}요일)", color=0x62c1cc) # Embed의 기본 틀(색상, 메인 제목, 설명)을 잡아줍니다
-            MealDay = f"{alltime[:4]}{alltime[5:7]}{int(alltime[8:10])-1:02d}"
+            today = get_day(int(KRtime[:4]),int(KRtime[5:7]),(int(KRtime[8:10])-1))
+            embed = discord.Embed(title=f"SDHS 급식 ({KRtime[5:7]}월 {int(KRtime[8:10])-1:02d}일 {today}요일)", color=0x62c1cc) # Embed의 기본 틀(색상, 메인 제목, 설명)을 잡아줍니다
+            MealDay = f"{KRtime[:4]}{KRtime[5:7]}{int(KRtime[8:10])-1:02d}"
             MealInfo = json.loads(meal_daydata(MealDay)) # 집합
             if list(MealInfo.keys())[0] == 'RESULT':
                 embed.add_field(name="정보", value="당일 급식 메뉴가 존재하지 않거나, 아직 공개되지 않았습니다.", inline=False)
@@ -369,31 +367,31 @@ async def 급식(ctx,*,date=None):
             embed.add_field(name="알레르기", value=f"`{Allergy}`", inline=False)
             await ctx.send(embed=embed)
     elif date == "내일":
-        if int(alltime[8:10]) == 31 and int(alltime[5:7]) == 12:
-            today = get_day(int(alltime[:4]+1),1,1)
+        if int(KRtime[8:10]) == 31 and int(KRtime[5:7]) == 12:
+            today = get_day(int(KRtime[:4]+1),1,1)
             embed = discord.Embed(title=f"SDHS 급식 (01월 01일 {today}요일)", color=0x62c1cc) # Embed의 기본 틀(색상, 메인 제목, 설명)을 잡아줍니다
-            MealDay = f"{int(alltime[:4])+1:04d}0101"
-        elif int(alltime[8:10]) == 29 and int(alltime[5:7]) == 2 and int(alltime[:4])%4 == 0:
-            today = get_day(int(alltime[:4]),int(alltime[5:7])+1,1)
-            embed = discord.Embed(title=f"SDHS 급식 ({int(alltime[5:7])+1:02d}월 01일 {today}요일)", color=0x62c1cc) # Embed의 기본 틀(색상, 메인 제목, 설명)을 잡아줍니다
-            MealDay = f"{alltime[:4]}{int(alltime[5:7])+1:02d}01"
-        elif int(alltime[8:10]) == 28 and int(alltime[5:7]) == 2 and int(alltime[:4])%4 != 0:
-            today = get_day(int(alltime[:4]),int(alltime[5:7])+1,1)
-            embed = discord.Embed(title=f"SDHS 급식 ({int(alltime[5:7])+1:02d}월 01일 {today}요일)", color=0x62c1cc) # Embed의 기본 틀(색상, 메인 제목, 설명)을 잡아줍니다
-            MealDay = f"{alltime[:4]}{int(alltime[5:7])+1:02d}01"
-        elif int(alltime[8:10]) == 31 and int(alltime[5:7]) in [1,3,5,7,8,10]:
-            today = get_day(int(alltime[:4]),int(alltime[5:7])+1,1)
-            embed = discord.Embed(title=f"SDHS 급식 ({int(alltime[5:7])+1:02d}월 01일 {today}요일)", color=0x62c1cc) # Embed의 기본 틀(색상, 메인 제목, 설명)을 잡아줍니다
-            MealDay = f"{alltime[:4]}{int(alltime[5:7])+1:02d}01"
-        elif int(alltime[8:10]) == 30 and int(alltime[5:7]) in [4,6,9,11]:
-            today = get_day(int(alltime[:4]),int(alltime[5:7])+1,1)
-            embed = discord.Embed(title=f"SDHS 급식 ({int(alltime[5:7])+1:02d}월 01일 {today}요일)", color=0x62c1cc) # Embed의 기본 틀(색상, 메인 제목, 설명)을 잡아줍니다
-            MealDay = f"{alltime[:4]}{int(alltime[5:7])+1:02d}01"
+            MealDay = f"{int(KRtime[:4])+1:04d}0101"
+        elif int(KRtime[8:10]) == 29 and int(KRtime[5:7]) == 2 and int(KRtime[:4])%4 == 0:
+            today = get_day(int(KRtime[:4]),int(KRtime[5:7])+1,1)
+            embed = discord.Embed(title=f"SDHS 급식 ({int(KRtime[5:7])+1:02d}월 01일 {today}요일)", color=0x62c1cc) # Embed의 기본 틀(색상, 메인 제목, 설명)을 잡아줍니다
+            MealDay = f"{KRtime[:4]}{int(KRtime[5:7])+1:02d}01"
+        elif int(KRtime[8:10]) == 28 and int(KRtime[5:7]) == 2 and int(KRtime[:4])%4 != 0:
+            today = get_day(int(KRtime[:4]),int(KRtime[5:7])+1,1)
+            embed = discord.Embed(title=f"SDHS 급식 ({int(KRtime[5:7])+1:02d}월 01일 {today}요일)", color=0x62c1cc) # Embed의 기본 틀(색상, 메인 제목, 설명)을 잡아줍니다
+            MealDay = f"{KRtime[:4]}{int(KRtime[5:7])+1:02d}01"
+        elif int(KRtime[8:10]) == 31 and int(KRtime[5:7]) in [1,3,5,7,8,10]:
+            today = get_day(int(KRtime[:4]),int(KRtime[5:7])+1,1)
+            embed = discord.Embed(title=f"SDHS 급식 ({int(KRtime[5:7])+1:02d}월 01일 {today}요일)", color=0x62c1cc) # Embed의 기본 틀(색상, 메인 제목, 설명)을 잡아줍니다
+            MealDay = f"{KRtime[:4]}{int(KRtime[5:7])+1:02d}01"
+        elif int(KRtime[8:10]) == 30 and int(KRtime[5:7]) in [4,6,9,11]:
+            today = get_day(int(KRtime[:4]),int(KRtime[5:7])+1,1)
+            embed = discord.Embed(title=f"SDHS 급식 ({int(KRtime[5:7])+1:02d}월 01일 {today}요일)", color=0x62c1cc) # Embed의 기본 틀(색상, 메인 제목, 설명)을 잡아줍니다
+            MealDay = f"{KRtime[:4]}{int(KRtime[5:7])+1:02d}01"
             MealInfo = json.loads(meal_daydata(MealDay)) # 집합
         else:
-            today = get_day(int(alltime[:4]),int(alltime[5:7]),int(alltime[8:10])+1)
-            embed = discord.Embed(title=f"SDHS 급식 ({alltime[5:7]}월 {int(alltime[8:10])+1:02d}일 {today}요일)", color=0x62c1cc) # Embed의 기본 틀(색상, 메인 제목, 설명)을 잡아줍니다
-            MealDay = f"{alltime[:4]}{alltime[5:7]}{int(alltime[8:10])+1:02d}"
+            today = get_day(int(KRtime[:4]),int(KRtime[5:7]),int(KRtime[8:10])+1)
+            embed = discord.Embed(title=f"SDHS 급식 ({KRtime[5:7]}월 {int(KRtime[8:10])+1:02d}일 {today}요일)", color=0x62c1cc) # Embed의 기본 틀(색상, 메인 제목, 설명)을 잡아줍니다
+            MealDay = f"{KRtime[:4]}{KRtime[5:7]}{int(KRtime[8:10])+1:02d}"
         MealInfo = json.loads(meal_daydata(MealDay)) # 집합
         if list(MealInfo.keys())[0] == 'RESULT':
             embed.add_field(name="정보", value="당일 급식 메뉴가 존재하지 않거나, 아직 공개되지 않았습니다.", inline=False)
