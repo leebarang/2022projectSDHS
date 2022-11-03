@@ -218,7 +218,7 @@ async def 재생(ctx,*,keyword):
     titles = result[0]['title']
     url = result[0]['url_suffix']
     songjpg = result[0]['thumbnails'][0]
-    print(f'<입력> : https://www.youtube.com{url}')
+    print(f'<입력> : 【{titles}】')
     playlist.append([titles,url,songjpg])
     await song_quest(titles,url,songjpg)
     await ctx.send(embed=embeds)
