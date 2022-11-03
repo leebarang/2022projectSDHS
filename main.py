@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 import requests
 import time
 import datetime
+import pytz
 import random
 import youtube_dl
 import ffmpeg
@@ -292,63 +293,7 @@ def meal_daydata(MealDay):
     question = xmlUrl + information
     raw = requests.get(question).text
     return raw
-'''
-def meal_monthdata(Dstart,Dend):
-    information = '?' + urlencode(
-        {    
-            quote_plus('KEY') : Key,
-            quote_plus('ATPT_OFCDC_SC_CODE') : "K10", # 강원도 교육청 
-            quote_plus('SD_SCHUL_CODE') : "7004207", # 강원사대부고 번호
-            quote_plus('MLSV_FROM_YMD') : Dstart,
-            quote_plus('MLSV_TO_YMD') : Dend,
-            quote_plus('Type') : 'json'
-        }
-    )
-    question = xmlUrl + information
-    raw = requests.get(question).text
-    return raw
 
-def Mdate_calculate(month,date):
-    if month <= 7 and month%2 == 1:
-        if date + 6 > 31:
-            date = 6 - (31 - date)
-            return f"{month+1:02d}{date:02d}"
-        else:
-            date += 6
-            return f"{month:02d}{date:02d}"
-    elif month >= 8 and month%2 == 0:
-        if date + 6 > 31:
-            date = 6 - (31 - date)
-            if month == 12:
-                return f"01{date:02d}"
-            else:
-                return f"{month+1:02d}{date:02d}"
-        else:
-            date += 6
-            return f"{month:02d}{date:02d}"
-    elif month == 2:
-        if month // 4 == 0:
-            if date > 29:
-                date = 6 - (31 - date)
-                return f"{month+1:02d}{date:02d}"
-            else:
-                date += 6
-                return f"{month:02d}{date:02d}"
-        else:
-            if date > 28:
-                date = 6 - (31 - date)
-                return f"{month+1:02d}{date:02d}"
-            else:
-                date += 6
-                return f"{month:02d}{date:02d}"
-    else:
-        if date + 6 > 30:
-            date = 6 - (31 - date)
-            return f"{month+1:02d}{date:02d}"
-        else:
-            date += 6
-            return f"{month:02d}{date:02d}"
-'''
 Allergy = "1.난류 2.우유 3.메밀 4.땅콩 5.대두 6.밀 7.고등어 8.게 9.새우 10.돼지고기 11.복숭아 12.토마토 13.아황산류 14.호두 15.닭고기 16.쇠고기 17.오징어 18.조개류(굴, 전복, 홍합 포함)"
 @bot.command()
 async def 급식(ctx,*,date=None):
@@ -506,7 +451,6 @@ async def 학사일정(ctx):
 async def 정보(ctx):
     await ctx.send('봇 정보 : 구동 체제 - VScode (Python) 버전 : 3.10.8 *기반 : project POPPY (discord.py : 2.0.1')
 
-TOKEN = os.getenv("BOT_TOKEN")
 load_dotenv()
+TOKEN = os.getenv("BOT_TOKEN")
 bot.run(TOKEN)
-print(TOKEN)
