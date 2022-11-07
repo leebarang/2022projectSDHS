@@ -447,7 +447,7 @@ async def 학사일정(ctx):
 
 @bot.command() 
 async def 정보(ctx):
-    await ctx.send('봇 정보 : 구동 체제 - VScode (Python) 버전 : 3.10.8 *기반 : project POPPY (discord.py : 2.0.1')
+    await ctx.send('봇 정보 : 구동 체제 - VScode (Python) 버전 : 3.10.8 *기반 : project POPPY (discord.py : 2.0.1)')
 
 load_dotenv()
 TOKEN = os.getenv("BOT_TOKEN")
