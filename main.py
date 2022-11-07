@@ -46,11 +46,11 @@ async def 도움말(ctx):
     await ctx.send(embed=embed)
 
 # 시간
-KRtime = datetime.datetime.now(pytz.timezone('Asia/Seoul')).strftime('%Y-%m-%d-%p-%I-%M-%S') #UTC+9
 @bot.command() 
-async def 시간(ctx,*,text = None): 
-  if(text == None):
-    await ctx.send(f"현재 시간은 [{KRtime[:4]}-{KRtime[5:7]}-{KRtime[8:10]}] {KRtime[11:13]} {KRtime[14:16]}시 {KRtime[17:19]}분 {KRtime[20:22]}초 입니다.")
+async def 시간(ctx,*,text = None):
+    KRtime = datetime.datetime.now(pytz.timezone('Asia/Seoul')).strftime('%Y-%m-%d-%p-%I-%M-%S') #UTC+9
+    if(text == None):
+        await ctx.send(f"현재 시간은 [{KRtime[:4]}-{KRtime[5:7]}-{KRtime[8:10]}] {KRtime[11:13]} {KRtime[14:16]}시 {KRtime[17:19]}분 {KRtime[20:22]}초 입니다.")
 
 # 인사
 @bot.command() 
@@ -70,6 +70,7 @@ async def 이벤트(ctx,*,text):
 # 특수 中 내맘점 (내 맘대로 점심)
 @bot.command(aliases=['내맘대로점심','ㄴㅁㅈ'])
 async def 내맘점(ctx):
+    KRtime = datetime.datetime.now(pytz.timezone('Asia/Seoul')).strftime('%Y-%m-%d-%p-%I-%M-%S') #UTC+9
     if NMJ == True:
         await ctx.send(f"현재 {KRtime[5:7]}월 강원사대부고 내 마음대로 점심이 운영중이에요.")
         await ctx.send("n월n일까지 신청할 수 있습니다.")
@@ -294,6 +295,7 @@ def meal_daydata(MealDay):
 Allergy = "1.난류 2.우유 3.메밀 4.땅콩 5.대두 6.밀 7.고등어 8.게 9.새우 10.돼지고기 11.복숭아 12.토마토 13.아황산류 14.호두 15.닭고기 16.쇠고기 17.오징어 18.조개류(굴, 전복, 홍합 포함)"
 @bot.command()
 async def 급식(ctx,*,date=None):
+    KRtime = datetime.datetime.now(pytz.timezone('Asia/Seoul')).strftime('%Y-%m-%d-%p-%I-%M-%S') #UTC+9
     if date == None:
         await ctx.send("급식 정보를 알고싶으시다면 → \"/급식 어제\",\"/급식 오늘\",\"/급식 내일\" 또는 \"/급식 <날짜>\"로 검색해주세요.\n`날짜로 검색 예시 : /급식 20220131`")
         return
